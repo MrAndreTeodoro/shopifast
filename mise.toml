@@ -1,0 +1,22 @@
+[tools]
+rust = { version = "stable", components = "rustfmt,clippy" }
+node = "lts"                      # for the Shopify CLI
+"npm:@shopify/cli" = "latest"
+"cargo:cargo-nextest" = "latest"
+"cargo:cargo-watch" = "latest"
+# add your GraphQL codegen CLI here once you pick it, e.g. "cargo:cynic-cli"
+
+[env]
+_.file = ".env"                   # git-ignored; commit only .env.example
+
+[tasks.fmt]
+run = "cargo fmt --check"
+
+[tasks.lint]
+run = "cargo clippy --workspace --all-targets -- -D warnings"
+
+[tasks.test]
+run = "cargo nextest run --workspace"
+
+[tasks.check]
+depends = ["fmt", "lint", "test"]
